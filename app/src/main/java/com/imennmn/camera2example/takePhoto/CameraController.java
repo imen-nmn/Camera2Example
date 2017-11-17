@@ -1,4 +1,4 @@
-package com.imennmn.camera2example;
+package com.imennmn.camera2example.takePhoto;
 
 import android.Manifest;
 import android.app.Activity;
@@ -31,6 +31,9 @@ import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 import android.widget.Toast;
+
+import com.imennmn.camera2example.R;
+import com.imennmn.camera2example.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;

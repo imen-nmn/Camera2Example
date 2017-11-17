@@ -1,4 +1,4 @@
-package com.imennmn.camera2example;
+package com.imennmn.camera2example.takePhoto;
 
 import android.Manifest;
 import android.content.Context;
@@ -18,6 +18,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.imennmn.camera2example.AutoFitTextureView;
+import com.imennmn.camera2example.R;
 
 import java.io.File;
 
@@ -28,7 +30,6 @@ import butterknife.Unbinder;
 
 
 public class CameraFragment extends Fragment implements CameraView {
-
 
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     @BindView(R.id.texture)
@@ -59,7 +60,7 @@ public class CameraFragment extends Fragment implements CameraView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         cameraController = new CameraController(this);
-        View view = inflater.inflate(R.layout.fragment_camera, container, false);
+        View view = inflater.inflate(R.layout.fragment_camera_photo, container, false);
         unbinder = ButterKnife.bind(this, view);
         pickedImg.setVisibility(View.GONE);
         return view;

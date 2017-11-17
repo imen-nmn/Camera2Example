@@ -1,18 +1,25 @@
 package com.imennmn.camera2example;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.imennmn.camera2example.CameraFragment.OnFragmentInteractionListener;
+import com.imennmn.camera2example.recordVideo.VideoFragment;
+import com.imennmn.camera2example.recordVideo.VideoFragment.OnMediaFragmentInteraction;
+import com.imennmn.camera2example.takePhoto.CameraFragment.OnFragmentInteractionListener;
 
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, OnMediaFragmentInteraction {
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        replaceFragment(new CameraFragment(), false) ;
+        replaceFragment(new VideoFragment(), false) ;
     }
 
 
@@ -27,5 +34,34 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         } catch (IllegalStateException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void showLoading() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Please Wait..");
+        progressDialog.setMessage("Loading ...");
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void showMessage(String messageToShow) {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(R.string.app_name);
+        alertDialogBuilder.setMessage(messageToShow).setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

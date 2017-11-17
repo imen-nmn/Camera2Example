@@ -1,4 +1,4 @@
-package com.imennmn.camera2example;
+package com.imennmn.camera2example.takePhoto;
 
 import android.content.Context;
 import android.graphics.Matrix;
