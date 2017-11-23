@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.imennmn.camera2example.recordVideo.VideoFragment;
 import com.imennmn.camera2example.recordVideo.VideoFragment.OnMediaFragmentInteraction;
 import com.imennmn.camera2example.takePhoto.CameraFragment.OnFragmentInteractionListener;
+import com.imennmn.camera2example.takePhoto.TakePhotoFragment;
+import com.imennmn.camera2example.takePhoto.TakePhotoFragment.TakePhotoInteractionListener;
 
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener, OnMediaFragmentInteraction {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener,
+        TakePhotoInteractionListener, OnMediaFragmentInteraction {
 
     ProgressDialog progressDialog;
 
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        replaceFragment(new VideoFragment(), false) ;
+        replaceFragment(new TakePhotoFragment(), false) ;
     }
 
 
