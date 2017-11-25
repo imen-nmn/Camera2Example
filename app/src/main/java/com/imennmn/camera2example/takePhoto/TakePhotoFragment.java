@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.Size;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -19,11 +20,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.imennmn.camera2example.AutoFitTextureView;
 import com.imennmn.camera2example.R;
+import com.imennmn.camera2example.Utils;
 
 import java.io.File;
 
@@ -145,6 +148,8 @@ public class TakePhotoFragment extends Fragment implements TakePhotoView {
         display.getMetrics(metrics);
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
+        Log.e("UtilsTag", "getScreenSize  "+width+" x "+height) ;
+
         return new Size(width, height);
     }
 
@@ -154,13 +159,14 @@ public class TakePhotoFragment extends Fragment implements TakePhotoView {
             @Override
             public void run() {
                 stopCamera();
-
+                pickedImg.setImageBitmap(null);
                 Glide.with(TakePhotoFragment.this)
                         .load(photoFile)
                         .asBitmap()
+                        .centerCrop()
                         .dontAnimate()
-                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                        .placeholder(R.mipmap.ic_launcher)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(pickedImg);
             }
         });
@@ -190,7 +196,25 @@ public class TakePhotoFragment extends Fragment implements TakePhotoView {
 
     @Override
     public void setAspectRatio(int w, int h) {
-        mTextureView.setAspectRatio(w, h);
+//        mTextureView.setAspectRatio(w, h);
+        Log.i("UtilsTag", "setAspectRatio  screen "+w+" x "+h);
+        int screenWidth = getScreenSize().getWidth() ;
+        int screenHeight = getScreenSize().getHeight();
+        Log.i("UtilsTag", "  screen "+screenWidth+" x "+screenHeight);
+
+        Utils.adjustVideoSurface(screenWidth, screenHeight, w, h, mTextureView);
+        RelativeLayout.LayoutParams surfaceParams = ((RelativeLayout.LayoutParams) mTextureView.getLayoutParams());
+
+        if (screenHeight - surfaceParams.height >= 0) {
+            surfaceParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            surfaceParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            surfaceParams.setMargins(0
+                    , 0
+                    , 0
+                    , 0);
+            mTextureView.setLayoutParams(surfaceParams);
+            mTextureView.requestLayout();
+        }
     }
 
     @Override

@@ -8,11 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.imennmn.camera2example.recordVideo.VideoFragment.OnMediaFragmentInteraction;
-import com.imennmn.camera2example.takePhoto.CameraFragment.OnFragmentInteractionListener;
 import com.imennmn.camera2example.takePhoto.TakePhotoFragment;
 import com.imennmn.camera2example.takePhoto.TakePhotoFragment.TakePhotoInteractionListener;
 
-public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener,
+public class MainActivity extends AppCompatActivity implements
         TakePhotoInteractionListener, OnMediaFragmentInteraction {
 
     ProgressDialog progressDialog;

@@ -101,7 +101,7 @@ public class TakePhotoController implements TextureView.SurfaceTextureListener {
     /**
      * ID of the current {@link CameraDevice}.
      */
-    private String mCameraId = CAMERA_FRONT ;
+    private String mCameraId = CAMERA_BACK ;
 
 
     /**
@@ -613,13 +613,13 @@ public class TakePhotoController implements TextureView.SurfaceTextureListener {
 //                }
 
             // For still image captures, we use the largest available size.
-            Size largest = Collections.max(
+           /* Size largest = Collections.max(
                     Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
                     new CompareSizesByArea());
             mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(),
-                    ImageFormat.JPEG, /*maxImages*/2);
+                    ImageFormat.JPEG, *//*maxImages*//*2);
             mImageReader.setOnImageAvailableListener(
-                    mOnImageAvailableListener, mBackgroundHandler);
+                    mOnImageAvailableListener, mBackgroundHandler);*/
 
             // Find out if we need to swap dimension to get the preview size relative to sensor
             // coordinate.
@@ -673,9 +673,19 @@ public class TakePhotoController implements TextureView.SurfaceTextureListener {
             // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
             // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
             // garbage capture data.
-            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),
-                    rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
-                    maxPreviewHeight, largest);
+            double ratioScreen = (double)takePhotoView.getScreenSize().getHeight()/(double)takePhotoView.getScreenSize().getWidth() ;
+            mPreviewSize= Utils.nearToRatio(ratioScreen, Arrays.asList(map.getOutputSizes(SurfaceTexture.class)));
+//            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),
+//                    rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
+//                    maxPreviewHeight, largest);
+            double imageRatio = (double)mPreviewSize.getWidth()/(double)mPreviewSize.getHeight() ;
+
+            Size imageSize= Utils.nearToRatio(imageRatio, Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)));
+
+            mImageReader = ImageReader.newInstance(imageSize.getWidth(), imageSize.getHeight(),
+                    ImageFormat.JPEG, /*maxImages*/2);
+            mImageReader.setOnImageAvailableListener(
+                    mOnImageAvailableListener, mBackgroundHandler);
 
             // We fit the aspect ratio of TextureView to the size of preview we picked.
 //            int orientation = getResources().getConfiguration().orientation;
